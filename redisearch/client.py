@@ -237,7 +237,7 @@ class Client(object):
 
         return {res[i]: res[i + 1] for i in range(0, len(res), 2)}
 
-    def search(self, query, snippet_sizes=None):
+    def search(self, query, snippet_sizes=None, index_name=None):
         """
         Search the index for a given query, and return a result of documents
 
@@ -248,7 +248,7 @@ class Client(object):
         - **snippet_sizes**: A dictionary of {field: snippet_size} used to trim and format the result. e.g.e {'body': 500}
         """
 
-        args = [self.index_name]
+        args = [self.index_name] if not index_name else [index_name]
 
         if isinstance(query, (str, unicode)):
             # convert the query from a text to a query object
