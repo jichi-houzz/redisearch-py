@@ -132,7 +132,7 @@ class Client(object):
         return Client.BatchIndexer(self, chunk_size=chunk_size)
 
     def create_index(self, fields, no_term_offsets=False,
-                     no_field_flags=False, no_score_indexes=False, stopwords = None):
+                     no_field_flags=False, no_score_indexes=False, stopwords = None, index_name = None):
         """
         Create the search index. Creating an existing index juts updates its properties
 
@@ -145,7 +145,7 @@ class Client(object):
         - **stopwords**: If not None, we create the index with this custom stopword list. The list can be empty
         """
 
-        args = [self.CREATE_CMD, self.index_name]
+        args = [self.CREATE_CMD, self.index_name] if not index_name else [self.CREATE_CMD, index_name]
         if no_term_offsets:
             args.append(self.NOOFFSETS)
         if no_field_flags:
@@ -216,6 +216,13 @@ class Client(object):
 
         return conn.execute_command(self.DEL_CMD, self.index_name, doc_id)
 
+    def set_index_name(self, idx_name):
+        """
+        Set index name to idx_name
+        """
+        self.index_name = idx_name
+    
+    
     def load_document(self, id):
         """
         Load a single document by id
